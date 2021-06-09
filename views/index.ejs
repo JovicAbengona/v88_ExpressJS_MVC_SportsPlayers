@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="https://learn.village88.com/assets/black_ninja-9adea777014ced1d5d36046555cf036c.ico?v=2" type="image/x-icon">
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/index.css">
+        <title>Village88 | NodeJS (Express) | Sports Players</title>
+    </head>
+    <body>
+        <section>
+            <form action="/search_players" method="POST">
+                <h3>Search Players</h3>
+                <input type="text" class="player_name" name="player_name" placeholder="Player Name">
+                <label><input type="checkbox" name="female" value="Female"> Female</label>
+                <label><input type="checkbox" name="male" value="Male"> Male</label>
+                <p>Sports</p>
+                <label><input type="checkbox" name="basketball" value="Basketball"> Basketball</label>
+                <label><input type="checkbox" name="volleyball" value="Volleyball"> Volleyball</label>
+                <label><input type="checkbox" name="baseball" value="Baseball"> Baseball</label>
+                <label><input type="checkbox" name="soccer" value="Soccer"> Soccer</label>
+                <label><input type="checkbox" name="football" value="Football"> Football</label>
+                <button type="submit">Search</button>
+            </form>
+            <div class="pictures_wrapper">
+            </div>
+        </section>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $.get("/get_players", data => {
+                    data.forEach(player => {
+                        const div = document.createElement("div");
+                        div.innerHTML = `<img src="${player.image}" alt="${player.player_name}"><p>${player.player_name}</p>`;
+                        $(".pictures_wrapper").append(div);
+                    });
+                });
+
+                $(".player_name").keyup(function(){
+                    $("form").submit();
+                });
+
+                $("input[type='checkbox'").click(function(){
+                    $("form").submit();
+                })
+
+                $("form").submit(function(){
+                    $(".pictures_wrapper").html("");
+                    $.post($(this).attr("action"), $(this).serialize(), function(data){
+                        data.forEach(player => {
+                            const div = document.createElement("div");
+                            div.innerHTML = `<img src="${player.image}" alt="${player.player_name}"><p>${player.player_name}</p>`;
+                            $(".pictures_wrapper").append(div);
+                        });
+                    });
+                    return false;
+                });
+            });
+            
+            // $(".signup_form").submit(function(){
+            //     clearErrors();
+            //     $.post($(this).attr("action"), $(this).serialize(), function(res){
+            //         $(".messages").html(res);
+            //     });
+            //     $(this)[0].reset();
+            //     return false;
+            // });
+
+            // $(".login_form").submit(function(){
+            //     clearErrors();
+            //     $.post($(this).attr("action"), $(this).serialize(), function(res){
+            //         if(res == "Success"){
+            //             window.location.replace("students/profile");
+            //         }
+            //         else{
+            //             $(".login_error").html(res);
+            //         }
+            //     });
+            //     $(this)[0].reset();
+            //     return false;
+            // });
+
+            // function clearErrors(){
+            //     $(".login_error").html("");
+            //     $(".messages").html("");
+            // }
+        </script>
+    </body>
+</html>
