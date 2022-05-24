@@ -14,14 +14,14 @@
             <form action="/search_players" method="POST">
                 <h3>Search Players</h3>
                 <input type="text" class="player_name" name="player_name" placeholder="Player Name">
-                <label><input type="checkbox" name="female" value="Female"> Female</label>
-                <label><input type="checkbox" name="male" value="Male"> Male</label>
+                <label><input type="checkbox" name="gender[]" value="F"> Female</label>
+                <label><input type="checkbox" name="gender[]" value="M"> Male</label>
                 <p>Sports</p>
-                <label><input type="checkbox" name="basketball" value="Basketball"> Basketball</label>
-                <label><input type="checkbox" name="volleyball" value="Volleyball"> Volleyball</label>
-                <label><input type="checkbox" name="baseball" value="Baseball"> Baseball</label>
-                <label><input type="checkbox" name="soccer" value="Soccer"> Soccer</label>
-                <label><input type="checkbox" name="football" value="Football"> Football</label>
+                <label><input type="checkbox" name="sport[]" value="Basketball"> Basketball</label>
+                <label><input type="checkbox" name="sport[]" value="Volleyball"> Volleyball</label>
+                <label><input type="checkbox" name="sport[]" value="Baseball"> Baseball</label>
+                <label><input type="checkbox" name="sport[]" value="Soccer"> Soccer</label>
+                <label><input type="checkbox" name="sport[]" value="Football"> Football</label>
                 <button type="submit">Search</button>
             </form>
             <div class="pictures_wrapper">
@@ -58,34 +58,6 @@
                     return false;
                 });
             });
-            
-            // $(".signup_form").submit(function(){
-            //     clearErrors();
-            //     $.post($(this).attr("action"), $(this).serialize(), function(res){
-            //         $(".messages").html(res);
-            //     });
-            //     $(this)[0].reset();
-            //     return false;
-            // });
-
-            // $(".login_form").submit(function(){
-            //     clearErrors();
-            //     $.post($(this).attr("action"), $(this).serialize(), function(res){
-            //         if(res == "Success"){
-            //             window.location.replace("students/profile");
-            //         }
-            //         else{
-            //             $(".login_error").html(res);
-            //         }
-            //     });
-            //     $(this)[0].reset();
-            //     return false;
-            // });
-
-            // function clearErrors(){
-            //     $(".login_error").html("");
-            //     $(".messages").html("");
-            // }
         </script>
     </body>
 </html>

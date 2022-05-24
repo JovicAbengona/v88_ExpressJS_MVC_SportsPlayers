@@ -13,52 +13,26 @@ module.exports = {
         response.render("templates/players", { players: request.session.players });
     },
     searchPlayers: (request, response) => {
-        let filters = {
-            "genders": [],
-            "sports": []
-        };
         let players = [];
         let player_name = request.body.player_name.toLowerCase();
-        
-        if(request.body.female != undefined)
-			filters.genders.push(request.body.female);
-		if(request.body.male != undefined)
-            filters.genders.push(request.body.male);
-		if(request.body.basketball != undefined)
-			filters.sports.push(request.body.basketball);
-        if(request.body.volleyball != undefined)
-			filters.sports.push(request.body.volleyball);
-        if(request.body.baseball != undefined)
-			filters.sports.push(request.body.baseball);
-        if(request.body.soccer != undefined)
-			filters.sports.push(request.body.soccer);
-        if(request.body.football != undefined)
-			filters.sports.push(request.body.football);
 
         request.session.players.forEach(player => {
             if(player.player_name.toLowerCase().includes(player_name)){
-                if(filters.genders.length != 0 && filters.sports.length == 0){
-                    filters.genders.forEach(gender => {
-                        if(player.gender == gender)
-                            players.push(player);
-                    });
+                if('gender' in request.body && !('sport' in request.body)){
+                    if(request.body.gender.includes(player.gender))
+                        players.push(player);
                 }
-                else if(filters.sports.length != 0 && filters.genders.length == 0){
-                    filters.sports.forEach(sport => {
-                        if(player.sport == sport)
-                            players.push(player);
-                    });
+                else if('sport' in request.body && !('gender' in request.body)){
+                    if(request.body.sport.includes(player.sport))
+                        players.push(player);
                 }
-                else if(filters.genders.length != 0 && filters.sports.length != 0){
-                    filters.genders.forEach(gender => {
-                        filters.sports.forEach(sport => {
-                            if(player.gender == gender && player.sport == sport)
-                                players.push(player);
-                        })
-                    });
+                else if('gender' in request.body && 'sport' in request.body){
+                    if(request.body.gender.includes(player.gender) && request.body.sport.includes(player.sport))
+                        players.push(player);
                 }
-                else
+                else{
                     players.push(player);
+                }
             }
         });
 

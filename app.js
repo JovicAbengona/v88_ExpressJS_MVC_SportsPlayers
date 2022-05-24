@@ -20,6 +20,6 @@ App.use(Routes);
 App.use(ErrController.get404); // not found
 App.use(ErrController.get500); // server error
 
-App.listen(8080, function(){
-    console.log("Listening on 8080");
+App.listen(3000, function(){
+    console.log("Listening on 3000");
 });
