@@ -14,8 +14,8 @@
             <form action="/search_players" method="POST">
                 <h3>Search Players</h3>
                 <input type="text" class="player_name" name="player_name" placeholder="Player Name">
-                <label><input type="checkbox" name="gender[]" value="F"> Female</label>
-                <label><input type="checkbox" name="gender[]" value="M"> Male</label>
+                <label><input type="checkbox" name="gender[]" value="Female"> Female</label>
+                <label><input type="checkbox" name="gender[]" value="Male"> Male</label>
                 <p>Sports</p>
                 <label><input type="checkbox" name="sport[]" value="Basketball"> Basketball</label>
                 <label><input type="checkbox" name="sport[]" value="Volleyball"> Volleyball</label>
@@ -30,33 +30,43 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
             $(document).ready(function(){
-                $.get("/get_players", data => {
-                    data.forEach(player => {
-                        const div = document.createElement("div");
-                        div.innerHTML = `<img src="${player.image}" alt="${player.player_name}"><p>${player.player_name}</p>`;
-                        $(".pictures_wrapper").append(div);
-                    });
+                /* Fetch list of players when the page loads */
+                $.get("/get_players", players => {
+                    /* Append a new img tag for each player fetched */
+                    displayPlayers(players);
                 });
 
+                /* Submit form while typing on input text */
                 $(".player_name").keyup(function(){
                     $("form").submit();
                 });
-
+                
+                /* Submit form when a checkbox is clicked */
                 $("input[type='checkbox'").click(function(){
                     $("form").submit();
                 })
 
+                /* Fetch list of players when form is submitted (form is submitted while typing on input text OR clicking a checkbox) */
                 $("form").submit(function(){
+                    /* Clear div before displaying results */
                     $(".pictures_wrapper").html("");
-                    $.post($(this).attr("action"), $(this).serialize(), function(data){
-                        data.forEach(player => {
-                            const div = document.createElement("div");
-                            div.innerHTML = `<img src="${player.image}" alt="${player.player_name}"><p>${player.player_name}</p>`;
-                            $(".pictures_wrapper").append(div);
-                        });
+
+                    $.post($(this).attr("action"), $(this).serialize(), players => {
+                        /* Append a new img tag for each player fetched */
+                        displayPlayers(players);
                     });
+
                     return false;
                 });
+
+                /* Append a new img tag for each player fetched */
+                function displayPlayers(players){
+                    players.forEach(player => {
+                        const div = document.createElement("div");
+                        div.innerHTML = `<img src="${player.image}" alt="${player.player_name}"><p>${player.player_name}</p>`;
+                        $(".pictures_wrapper").append(div);
+                    });
+                }
             });
         </script>
     </body>
